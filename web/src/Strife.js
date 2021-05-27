@@ -11,7 +11,7 @@ import Logout from "pages/auth/Logout.js";
 import Signup from "pages/auth/Signup.js";
 import './Strife.scss';
 
-export function Strife() {
+/* export function Strife() {
    const [Auth, setAuth] = useState(null);
    const [loading, setLoading] = useState(true);
 
@@ -50,5 +50,52 @@ export function Strife() {
          </Switch>
       </Router>
    );
+} */
+
+export default class Strife extends React.Component{
+   constructor(props){
+      super(props);
+
+      this.state = {
+         Auth: false,
+         loading: true
+      };
+
+      
+   }
+
+   componentDidMount(){
+      auth.onAuthStateChanged((user) => {
+         if(user){
+            this.setState({
+               Auth: true,
+               loading: false
+            })
+         }
+         else{
+            this.setState({
+               Auth: false,
+               loading: false
+            })
+         }
+      });
+   };
+
+   render(){
+      return this.state.loading  === true ? <h2>loading... </h2> : ( //add loading
+         <Router>
+            <Switch>
+               <Route exact path="/" component={Home}/>
+               <PrivateRoute path="/app" authenticated={this.state.Auth} component={App}/>
+               <PrivateRoute path="/logout" authenticated={this.state.Auth} component={Logout}/>
+               <PublicRoute path="/Login" authenticated={this.state.Auth} component={Login}/>
+               <PublicRoute path="/Signup" authenticated={this.state.Auth} component={Signup}/>
+               <Route path="*">
+                  404 Not Found
+               </Route>
+            </Switch>
+         </Router>
+      );
+   }
 }
 

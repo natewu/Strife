@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import {Strife as App} from './Strife';
+import Strife from './Strife';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Strife />
   </React.StrictMode>,
   document.getElementById('root')
 );
