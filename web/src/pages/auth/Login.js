@@ -1,29 +1,18 @@
-import React, {useCallback} from 'react'
+import React, {useState} from 'react'
 import {TextField, Button} from "@material-ui/core";
-import app from "api/base.js";
+import {handleSignup, handleLogin} from "utils/auth.js";
 
 export default function Login() {
 
-   const handleLogin = useCallback(
-      async event => {
-        event.preventDefault();
-        const { email, password } = event.target.elements;
-        try {
-          await app
-            .auth()
-            .signInWithEmailAndPassword(email.value, password.value)
-        } catch (error) {
-          alert(error);
-        // incorrectMessage="Incorrect Password!";
-        }
-      },
-    );
+  const[email, setEmail] = useState(null);
+  const[password, setPassword] = useState(null);
 
-   return (
-      <div id="login-container">
-         <TextField label="email" type="email" name="email" size="small" fullWidth variant="outlined"/>
-         <TextField label="password" type="password" name="password" size="small" fullWidth variant="outlined"/>
-         <Button fullWidth>Login</Button>
-      </div>
-   )
+  return (
+    <div id="auth-container">
+        <TextField label="email" type="email" size="small" onChange={e => setEmail(e.target.value)} fullWidth variant="outlined"/>
+        <TextField label="password" type="password" size="small" onChange={e => setPassword(e.target.value)} fullWidth variant="outlined"/>
+        <Button fullWidth onClick={() => handleLogin(email, password)}>Login</Button>
+        <Button fullWidth onClick={() => handleSignup(email, password)}>Signup</Button>
+    </div>
+  )
 }

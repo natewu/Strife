@@ -1,9 +1,11 @@
 import React from 'react'
+import app from "api/base.js";
 
 export default function Logout() {
-   return (
-      <div>
-         
-      </div>
-   )
+   app.auth().signOut().then(() => {
+      console.log("login success");
+      }).catch((error) => {
+      console.log(error);
+   });
+   return(null);
 }

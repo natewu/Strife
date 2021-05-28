@@ -1,7 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-var firebaseui = require('firebaseui');
 
 const app =  firebase.initializeApp({
     apiKey: process.env.REACT_APP_FIREBASE_KEY,
@@ -22,10 +21,7 @@ db.settings({timestampInSnapshots:true});
 export default app;
 const auth = firebase.auth();
 
-var ui = new firebaseui.auth.AuthUI(app.auth());
-
 export {
     db,
     auth,
-    ui,
 };
