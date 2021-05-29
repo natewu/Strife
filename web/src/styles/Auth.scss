@@ -1,3 +1,51 @@
+@use "../Strife.scss" as Strife;
+// $primary: blue;
+.wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    flex-flow: column wrap;
+}
 .auth-container{
-    background-color: $primary;
+    background-color: Strife.$secondary;
+    color: Strife.$primary;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    padding: 1.5rem 4rem 2rem 4rem;
+    border-radius: 10px;
+    width: 20rem;
+    h2{
+        font-weight: 300;
+    }
+    .input{
+        color: Strife.$primary !important;
+        margin: 0 0 1rem 0;
+        .MuiInputBase-root::after,.MuiInputLabel-root::after{
+            border-bottom: 2px solid Strife.$accent !important;
+        }
+    }
+    .MuiButtonBase-root{
+        background-color: Strife.$accent !important;
+        height: 3rem;
+    }
+    label{
+        color: Strife.$primary !important;
+        filter: opacity(0.7) !important;
+    }
+    .register{
+        font-size: 0.875rem;
+        filter: opacity(0.7);
+        a{
+            color: Strife.$accent;
+        }
+    }
+}
+.logo{
+    align-self: flex-start;
+    *{
+        color: Strife.$secondary;
+    }
+    display: flex;
 }
