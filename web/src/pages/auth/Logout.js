@@ -3,7 +3,7 @@ import app from "api/base.js";
 
 export default function Logout() {
    app.auth().signOut().then(() => {
-      console.log("login success");
+      console.log("logout success");
       }).catch((error) => {
       console.log(error);
    });

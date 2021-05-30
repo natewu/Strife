@@ -6,9 +6,8 @@ import { PublicRoute, PrivateRoute } from "components/Routing.js";
 
 import Home from "pages/home/Home.js";
 import App from "pages/app/App.js";
-import Login from "pages/auth/Login.js";
+import Authentication, {authType} from "pages/auth/Authentication.js";
 import Logout from "pages/auth/Logout.js";
-import Signup from "pages/auth/Signup.js";
 import './Strife.scss';
 
 export default class Strife extends React.Component{
@@ -44,8 +43,8 @@ export default class Strife extends React.Component{
             <Switch>
                <Route exact path="/" component={Home}/>
                <PrivateRoute path="/app" authenticated={this.state.Auth} component={App}/>
-               <PublicRoute path="/Login" authenticated={this.state.Auth} component={Login}/>
-               <PublicRoute path="/Signup" authenticated={this.state.Auth} component={Signup}/>
+               <PublicRoute path="/Login" authenticated={this.state.Auth} component={Authentication} params={{authType: true}}/>
+               <PublicRoute path="/Register" authenticated={this.state.Auth} component={Authentication} params={{authType: authType.register}}/>
                <PrivateRoute path="/Logout" authenticated={this.state.Auth} component={Logout}/>
                <Route path="*">
                   404 Not Found
