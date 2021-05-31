@@ -24,11 +24,25 @@ export async function handleRegister(email, username, password, confirmPass, han
       }
    }
 
-   (email === null) ? handleError("email cannot be empty") 
-      : (password, confirmPass === null) ? handleError("password cannot be empty")
-      : (password !== confirmPass) ? handleError("passwords don't match") 
-      : (username === null) ? handleError("username cannot be empty")
-      : Register();
+
+   await db.collection("users").where("username", "==", username).get().then((snapshot)=>{
+      if(snapshot.empty){
+         (email === null) ? handleError("email cannot be empty") 
+         : (password, confirmPass === null) ? handleError("password cannot be empty")
+         : (password !== confirmPass) ? handleError("passwords don't match") 
+         : (username === null) ? handleError("username cannot be empty")
+         : Register();
+      }
+      else{
+         handleError("username is taken!");
+      }
+   }).catch(err => {
+      console.log(err);
+   })
+
+   
+
+   //TODO: check if username is already taken
 }
 
 export async function handleLogin(email, password, handleError){
