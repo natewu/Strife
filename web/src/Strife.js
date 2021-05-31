@@ -47,7 +47,7 @@ export default class Strife extends React.Component{
                <PublicRoute path="/Register" authenticated={this.state.Auth} component={Authentication} params={{authType: authType.register}}/>
                <PrivateRoute path="/Logout" authenticated={this.state.Auth} component={Logout}/>
                <Route path="*">
-                  404 Not Found
+                  <p>404 Not Found</p>
                </Route>
             </Switch>
          </Router>
