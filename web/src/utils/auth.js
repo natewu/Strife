@@ -39,10 +39,6 @@ export async function handleRegister(email, username, password, confirmPass, han
    }).catch(err => {
       console.log(err);
    })
-
-   
-
-   //TODO: check if username is already taken
 }
 
 export async function handleLogin(email, password, handleError){

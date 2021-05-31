@@ -1,0 +1,16 @@
+@use "../Strife.scss" as Strife;
+
+.Chat{
+    display: flex;
+    flex-flow: column;
+    flex-basis: auto;
+    flex-grow: 4;
+    height: 100vh;
+}
+.text__area{
+    
+    flex: 16 1 auto;
+}
+.user__input{
+    flex: 1 1 auto;
+}

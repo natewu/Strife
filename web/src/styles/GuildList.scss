@@ -1,0 +1,11 @@
+@use "../Strife.scss" as Strife;
+
+.Guild__List{
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: Strife.$background;
+    flex: 1 1 auto;
+    *{
+        color: Strife.$primary;
+    }
+}
