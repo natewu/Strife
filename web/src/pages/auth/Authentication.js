@@ -32,23 +32,35 @@ export default function Authentication({authType}) {
 }
 
 function Login({email, password}){
+
+   const[error, setError] = useState(null);
+
    return(
       <div>
          <div className="register input"><Link to="/forgotPass" >Forgot your password?</Link></div>
-         <Button className="input" fullWidth onClick={() => handleLogin(email, password)}>Login</Button>
+         <Button className="input" fullWidth onClick={ () => handleLogin(email, password, setError) }>Login</Button>
          <span className="register">Need an account? <Link to="/register" >Register</Link> </span>
+         <div className="error">
+            { error ? <p>{error}</p> : null}
+         </div>
       </div>
    )
 }
 function Register({email, password}){
 
+   const[username, setUsername] = useState(null);
    const[confirmPass, setConfirmPass] = useState(null);
+   const[error, setError] = useState(null);
 
    return(
       <div>
          <TextField className="input" label="confirm password" type="password" size="small" onChange={e => setConfirmPass(e.target.value)} fullWidth variant="filled"/>
-         <Button className="input" fullWidth onClick={() => handleRegister(email, password, confirmPass)}>Register</Button>
+         <TextField className="input" label="username" type="username" size="small" onChange={e => setUsername(e.target.value)} fullWidth variant="filled"/>
+         <Button className="input" fullWidth onClick={() => handleRegister(email, username, password, confirmPass, setError)}>Register</Button>
          <span className="register">Already have an account? <Link to="/login" >Login</Link> </span>
+         <div className="error">
+            { error ? <p>{error}</p> : null}
+         </div>
       </div>
    )
 }
