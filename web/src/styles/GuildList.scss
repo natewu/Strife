@@ -4,7 +4,9 @@
     display: flex;
     flex-flow: column nowrap;
     background-color: Strife.$background;
+    min-width: 72px;
     flex: 1 1 auto;
+    overflow:hidden;
     *{
         color: Strife.$primary;
     }

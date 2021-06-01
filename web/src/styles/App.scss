@@ -3,4 +3,6 @@
 .App{
     display: flex;
     flex-flow: row nowrap;
+    align-items: stretch;
+    min-width: 100vw;
 }

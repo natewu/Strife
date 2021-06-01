@@ -3,8 +3,7 @@
 .Chat{
     display: flex;
     flex-flow: column;
-    flex-basis: auto;
-    flex-grow: 4;
+    flex: 4 0 auto;
     height: 100vh;
 }
 .text__area{
