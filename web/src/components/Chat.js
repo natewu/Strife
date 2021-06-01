@@ -5,16 +5,24 @@ import {TextField} from "@material-ui/core";
 export default function Chat() {
    return (
       <div className="Chat">
-         <TextArea/>
+         <TextArea channelName="general" description="everything basically."/>
          <UserInput channelName="message #general"/>
       </div>
    )
 }
 
-function TextArea() {
+function TextArea({channelName, description}) {
    return (
       <div className="text__area">
-         text area
+         <div className="channel__info">
+            <h2>{channelName}</h2>
+            <p>{description}</p>
+            <div className="spacer"/>
+            <div className="search">search</div>
+         </div>
+         <div className="channel__content">
+            posts
+         </div>
       </div>
    );
 }
@@ -22,7 +30,7 @@ function TextArea() {
 function UserInput({channelName}){
    return (
       <div className="user__input">
-         <TextField className="text__input" variant="outlined" label={channelName} fullWidth/>
+         <TextField className="text__input" variant="outlined" label={channelName} fullWidth size="small"/>
       </div>
    );
 }

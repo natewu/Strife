@@ -11,7 +11,6 @@ export default function Sidebar() {
             <GuildInfo/>
             <UserInfo/>
          </div>
-         
       </div>
    )
 }

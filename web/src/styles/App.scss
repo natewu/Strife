@@ -1,8 +1,26 @@
 @use "../Strife.scss" as Strife;
 
-.App{
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: stretch;
-    min-width: 100vw;
+@media(min-width: 760px){
+    .App{
+        display: grid;
+        grid-template-columns: 20rem 1fr 15rem;
+        // flex-flow: row nowrap;
+        // align-items: stretch;
+        min-width: 100vw;
+    }
+}
+@media(max-width: 760px){
+    .App{
+        display: grid;
+        grid-template-columns: 1fr;
+        // flex-flow: row nowrap;
+        // align-items: stretch;
+        min-width: 100vw;
+    }
+    .sidebar{
+        display: none !important;
+    }
+    .sidebar__members{
+        display: none !important;
+    }
 }

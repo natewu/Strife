@@ -2,12 +2,11 @@
 
 .sidebar{
     background-color: Strife.$secondary;
-    
     min-height: 100vh;
     display: flex;
     flex: 1 0 auto;
     min-width: 5rem;
-    width: 15rem;
+    // width: 20rem;
     max-width: 20rem;
     *{
         color: Strife.$primary;

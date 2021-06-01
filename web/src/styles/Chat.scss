@@ -1,15 +1,48 @@
 @use "../Strife.scss" as Strife;
 
 .Chat{
-    display: flex;
-    flex-flow: column;
+    display: grid;
+    // display: flex;
+    // flex-flow: column;
     flex: 4 0 auto;
+    grid-template-rows: 10fr 1fr;
     height: 100vh;
 }
 .text__area{
-    
-    flex: 16 1 auto;
+    // flex: 16 0 auto;
+    display: flex;
+    flex-flow: column;
+    grid-row: 1;
+    .channel__info{
+        align-items: center;
+        border-bottom: 1px solid Strife.$secondary;
+        display: flex;
+        flex: 1 0 auto;
+        flex-flow: row;
+        justify-content: flex-start;
+        max-height: 3rem;
+        min-height: 64px;
+        *{
+            margin: 1rem;
+        }
+        .spacer{
+            flex: 2 2 auto;
+        }
+        .search{
+            // align-self: flex-end;
+        }
+    }
+    .channel__content{
+        flex: 20 0 auto;
+    }
 }
 .user__input{
+    align-items: center;
+    display: flex;
+    grid-row: 2;
+    justify-content: center;
+}
+.text__input{
     flex: 1 1 auto;
+    margin: 0 2rem 0 2rem !important;
 }
