@@ -2,6 +2,7 @@ import React from 'react';
 import app from "api/base.js";
 import "styles/Sidebar.scss";
 import GuildList from "components/GuildList.js";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 export default function Sidebar() {
    return (
@@ -18,7 +19,18 @@ export default function Sidebar() {
 export function GuildInfo(){
    return(
       <div className="guild__info">
-         guild info
+         <GuildOptions guildName="Guild"/>
+      </div>
+   );
+}
+
+export function GuildOptions({guildName}){
+   return(
+      <div className="guild__options">
+         <header className="guild__header">
+            <h1 className="guild__name">{guildName}</h1>
+            <ArrowDropDownIcon/>
+         </header>
       </div>
    );
 }

@@ -2,33 +2,66 @@
 
 .sidebar{
     background-color: Strife.$secondary;
-    min-height: 100vh;
     display: flex;
     flex: 1 0 auto;
-    min-width: 5rem;
     // width: 20rem;
     max-width: 20rem;
+    min-height: 100vh;
+    min-width: 5rem;
     *{
         color: Strife.$primary;
     }
     .info{
-        flex: 10 0 auto;
-        // width: 240px;
         display:flex;
+        flex: 10 0 0;
         flex-flow: column nowrap;
+        // width: 240px;
+        min-width: 0;
     }
 }
 .guild__info{
     flex: 16 0 auto;
 }
+.guild__options{
+    align-items: center;
+    border-bottom: 1px solid Strife.$background;
+    box-shadow: Strife.$bottom-shadow;
+    display: flex;
+    flex: 1 0 auto;
+    justify-content: center;
+    max-height: 2rem;
+    min-height: 50px;
+    .guild__name{
+        flex: 1;
+        font-size: 1.075rem;
+        font-weight: 500;
+        overflow: hidden;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .guild__header{
+        align-items: center;
+        background-color: Strife.$secondary;
+        cursor: pointer;
+        display: flex;
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 0 16px;
+        transition: filter .1s linear;
+        &:hover{
+            filter:brightness(1.2);
+        }
+    }
+}
 .user__info{
-    flex: 1 1 auto;
     background-color: Strife.$background;
+    flex: 1 1 auto;
 }
 
 .sidebar__members{
     background-color: Strife.$primary-foreground;
-    filter: opacity(0.8);
     display: flex;
+    filter: opacity(0.8);
     flex: 1 0 auto;
 }
