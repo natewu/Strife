@@ -61,6 +61,11 @@
 .channel{
     margin: 0 1rem 0 1rem;
     cursor: pointer;
+    background-color: Strife.$secondary;
+    border-radius: 4px;
+    &:hover{
+        background-color: Strife.$hover-highlight;
+    }
     *{
         color: Strife.$channels-default;
         &:hover{
