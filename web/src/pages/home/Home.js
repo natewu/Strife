@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Redirect, Route, Switch, Link } from "react-router-dom";
 
 export default function Home() {
    return (
       <div>
-         Home
+         Home - 
+         <Link to="/app">Launch app</Link>
       </div>
    )
 }

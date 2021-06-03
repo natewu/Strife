@@ -54,6 +54,92 @@
         }
     }
 }
+.guild__channels{
+    align-items: center;
+    display: flex;
+}
+.channel{
+    margin: 0 1rem 0 1rem;
+    cursor: pointer;
+    *{
+        color: Strife.$channels-default;
+        &:hover{
+            color: Strife.$channels-hover;
+        }
+    }
+    .channel__name{
+        display: flex;
+        align-items: center;
+        margin: 0;
+        text-align: left;
+        padding: 6px 0;
+        font-size: 15px;
+        line-height: 20px;
+        letter-spacing: 0.25px;
+        font-weight: 400;
+        text-overflow: ellipsis;
+        white-space: normal;
+    }
+    .channel__hash{
+        font-size: 24px;
+        font-weight: 400;
+        margin: 0 6px;
+    }
+}
+.category__container{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.category{
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex: 1;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding-top: 10px;
+    height: 24px;
+    overflow: hidden;
+    *{
+        overflow: hidden;
+    }
+    .category__name{
+        font-size: 12px;
+        text-transform: uppercase;
+        line-height: 16px;
+        letter-spacing: 0.25px;
+        font-weight: 500;
+        margin: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+    }
+    .category__expand{
+        margin: 5px !important;
+        // cursor: pointer;
+        .MuiSvgIcon-fontSizeSmall{
+            font-size: 1rem;
+        }
+    }
+    .category__header{
+        align-items: center;
+        display: flex;
+        filter: opacity(0.6);
+        &:hover{
+            filter: opacity(0.9) !important;
+        }
+    }
+    .category__add{
+        margin: 5px;
+        filter: opacity(0.6);
+        padding-right: 6px;
+        &:hover{
+            filter: opacity(1) !important;
+        }
+    }
+}
 .user__info{
     background-color: Strife.$background;
     flex: 1 1 auto;
