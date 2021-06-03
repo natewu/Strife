@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import app from "api/base.js";
 
 export default function Logout() {

@@ -5,41 +5,125 @@
     // display: flex;
     // flex-flow: column;
     flex: 4 0 auto;
-    grid-template-rows: 10fr 1fr;
+    grid-template-rows: 0.5fr 10fr 1fr;
     height: 100vh;
+    overflow:hidden;
 }
 .text__area{
     // flex: 16 0 auto;
     display: flex;
     flex-flow: column;
-    grid-row: 1;
-    .channel__info{
-        align-items: center;
-        box-shadow: Strife.$bottom-shadow;
-        display: flex;
-        flex: 1 0 auto;
-        flex-flow: row;
-        justify-content: flex-start;
-        max-height: 2rem;
-        min-height: 50px;
-        *{
-            margin: 1rem;
-        }
-        .spacer{
-            flex: 2 2 auto;
-        }
-        .search{
-            // align-self: flex-end;
-        }
+    grid-row: 2;
+    overflow-y: scroll;
+    &::-webkit-scrollbar{
+        width: 6px;   
+    }
+    &::-webkit-scrollbar-track{
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.11); 
+        border-radius: 10px;
+        margin: 10px;
+        
+    }
+    &::-webkit-scrollbar-thumb{
+        background-color: rgba(128, 128, 128, 0.308);
+        border-radius: 20px;
+        width: 6px;  
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgb(114, 114, 114); 
     }
     .channel__content{
         flex: 20 0 auto;
+        margin: 2rem;
     }
 }
+.chat__header{
+    grid-row: 1;
+    align-items: center;
+    box-shadow: Strife.$bottom-shadow;
+    display: flex;
+    flex: 1 0 auto;
+    flex-flow: row;
+    justify-content: flex-start;
+    max-height: 2rem;
+    min-height: 50px;
+    *{
+        margin: 1rem;
+        display: flex;
+    }
+    .channel__info{
+        align-items: center;
+        justify-content: flex-start;
+        display: flex;
+        flex: 1 0 auto;
+        flex-flow: row;
+        margin: 0;
+        .channel__name{
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            .channel__hash{
+                margin: 0 10px 0 4px;
+                font-size: 25px;
+                font-weight: 400;
+                color: Strife.$channels-default;
+                filter: brightness(0.7);
+            }
+        }
+        .channel__description{
+            color: Strife.$channels-default;
+            filter: brightness(0.8);
+        }
+    }
+    .spacer{
+        flex: 2 2 auto;
+    }
+    .channel__tools{
+        margin: 0;
+    }
+}
+.message__box{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: Strife.$bottom-shadow;
+    padding: 10px 0;
+    *{
+        font-size: 14px;
+    }
+    .message{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .message__content{
+            margin: 0 10px;
+        }
+        .message__info{
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: flex-start;
+            justify-content: flex-start;
+            margin: 0 0 0 20px;
+            .message__user{
+                margin: 0;
+                font-weight: 500;
+            }
+            .message__timestamp{
+                margin: 0 10px;
+                font-weight: 400;
+                font-size: 13px;
+            }
+            .message__content{
+                margin: 1px 0;
+            }
+        }
+    }
+}
+
 .user__input{
     align-items: center;
     display: flex;
-    grid-row: 2;
+    grid-row: 3;
     justify-content: center;
 }
 .text__input{

@@ -2,8 +2,9 @@
 
 @media(min-width: 760px){
     .App{
-        display: grid;
-        grid-template-columns: 20rem 1fr 15rem;
+        // display: grid;
+        display: flex;
+        // grid-template-columns: 22rem 1fr 15rem;
         // flex-flow: row nowrap;
         // align-items: stretch;
         min-width: 100vw;

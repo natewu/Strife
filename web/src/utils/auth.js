@@ -41,7 +41,8 @@ export async function handleRegister(email, username, password, confirmPass, han
    })
 }
 
-export async function handleLogin(email, password, handleError){
+export async function handleLogin(email, password, handleError, e){
+   e.preventDefault();
    try {
       await app.auth().signInWithEmailAndPassword(email, password).then(()=>{
          console.log("Login Success!");

@@ -5,7 +5,7 @@
     display: flex;
     flex: 1 0 auto;
     // width: 20rem;
-    max-width: 20rem;
+    max-width: 22rem;
     min-height: 100vh;
     min-width: 5rem;
     *{
@@ -59,10 +59,10 @@
     display: flex;
 }
 .channel{
-    margin: 0 1rem 0 1rem;
-    cursor: pointer;
     background-color: Strife.$secondary;
     border-radius: 4px;
+    cursor: pointer;
+    margin: 0 1rem 0 1rem;
     &:hover{
         background-color: Strife.$hover-highlight;
     }
@@ -73,15 +73,15 @@
         }
     }
     .channel__name{
-        display: flex;
         align-items: center;
-        margin: 0;
-        text-align: left;
-        padding: 6px 0;
+        display: flex;
         font-size: 15px;
-        line-height: 20px;
-        letter-spacing: 0.25px;
         font-weight: 400;
+        letter-spacing: 0.25px;
+        line-height: 20px;
+        margin: 0;
+        padding: 6px 0;
+        text-align: left;
         text-overflow: ellipsis;
         white-space: normal;
     }
@@ -103,21 +103,21 @@
     display: flex;
     flex: 1;
     flex-flow: row nowrap;
-    justify-content: space-between;
-    padding-top: 10px;
     height: 24px;
+    justify-content: space-between;
     overflow: hidden;
+    padding-top: 10px;
     *{
         overflow: hidden;
     }
     .category__name{
         font-size: 12px;
-        text-transform: uppercase;
-        line-height: 16px;
-        letter-spacing: 0.25px;
         font-weight: 500;
+        letter-spacing: 0.25px;
+        line-height: 16px;
         margin: 0;
         text-overflow: ellipsis;
+        text-transform: uppercase;
         white-space: nowrap;
 
     }
@@ -137,8 +137,8 @@
         }
     }
     .category__add{
-        margin: 5px;
         filter: opacity(0.6);
+        margin: 5px;
         padding-right: 6px;
         &:hover{
             filter: opacity(1) !important;
@@ -146,8 +146,48 @@
     }
 }
 .user__info{
+    align-items: center;
     background-color: Strife.$background;
-    flex: 1 1 auto;
+    display: flex;
+    flex: 0;
+    justify-content: space-between;
+    padding: 10px;
+    *{
+        color: Strife.$channels-default;
+    }
+    .user__avatar{
+        height: 32px !important;
+        width: 32px !important;
+    }
+    .user__details{
+        flex: 1;
+        padding: 10px;
+    }
+    .username{
+        color: white;
+        font-size: 15px;
+        margin: 0;
+        text-align: left;
+    }
+    .user__tag{
+        font-size: 13px;
+        margin: 0;
+        text-align: left;
+        // color: Strife.$channels-default;
+    }
+    .user__controlIcons{
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        *{
+            color: Strife.$channels-default;
+            cursor: pointer;
+            padding: 1px 3px;
+            &:hover{
+                color: Strife.$channels-hover;
+            }
+        }
+    }
 }
 
 .sidebar__members{

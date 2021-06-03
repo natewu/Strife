@@ -21,12 +21,12 @@ export default function Authentication({authType}) {
          <div className="logo">
             <h2>STRIFE</h2>
          </div>
-         <div className="auth-container">
+         <form className="auth-container">
             { authType ? (<h2>Welcome back!</h2>) : (<h2>Create an account</h2>) }
             <TextField className="input" label="email" type="email" size="small" onChange={e => setEmail(e.target.value)} fullWidth variant="filled" />
             <TextField className="input" label="password" type="password" size="small" onChange={e => setPassword(e.target.value)} fullWidth variant="filled"/>
             { authType ? (<Login email={email} password={password}/>) : (<Register email={email} password={password}/>) }
-         </div>
+         </form>
       </div>
    )
 }
@@ -38,7 +38,7 @@ function Login({email, password}){
    return(
       <div>
          <div className="register input"><Link to="/forgotPass" >Forgot your password?</Link></div>
-         <Button className="input" type="submit" fullWidth onClick={ () => handleLogin(email, password, setError) }>Login</Button>
+         <Button className="input" type="submit" fullWidth onClick={ (e) => handleLogin(email, password, setError, e) }>Login</Button>
          <span className="register">Need an account? <Link to="/register" >Register</Link> </span>
          <div className="error">
             { error ? <p>{error}</p> : null}

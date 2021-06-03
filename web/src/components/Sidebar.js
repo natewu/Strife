@@ -1,10 +1,14 @@
 import React from 'react';
-import app from "api/base.js";
+import app, {db} from "api/base.js";
 import "styles/Sidebar.scss";
 import GuildList from "components/GuildList.js";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import AddIcon from '@material-ui/icons/Add';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SettingsIcon from '@material-ui/icons/Settings';
+import HeadsetIcon from '@material-ui/icons/Headset';
+import MicIcon from '@material-ui/icons/Mic';
+import {Avatar} from "@material-ui/core";
 
 export default function Sidebar() {
    return (
@@ -77,7 +81,16 @@ export function Category({id, categoryName}){
 export function UserInfo(){
    return(
       <div className="user__info">
-         {app.auth().currentUser.email}
+         <Avatar className="user__avatar" src="https://th.bing.com/th/id/Rca1aaa7e26e576f18f4ab3c72723b80c?rik=C9IVBiSZ2QX2Kw&pid=ImgRaw"/>
+         <div className="user__details">
+            <h4 className="username">{app.auth().currentUser.email}</h4>
+            <p className="user__tag">#0001</p>
+         </div>
+         <div className="user__controlIcons">
+            <MicIcon fontSize="small"/>
+            <HeadsetIcon fontSize="small"/>
+            <SettingsIcon fontSize="small"/>
+         </div>
       </div>
    )
 }
