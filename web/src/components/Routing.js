@@ -6,7 +6,7 @@ export function PrivateRoute({component: Component, authenticated, params, ...re
       <Route
          {...rest}
          render={
-            (props) => authenticated === true
+            (props) => authenticated
             ? <Component {...params} {...props}/> 
             : <Redirect to={{ pathname:"/login", state:{ from: props.location } }}/> 
          }
@@ -19,7 +19,7 @@ export function PublicRoute({component: Component, authenticated, params, ...res
       <Route
          {...rest}
          render={
-            (props) => authenticated === false
+            (props) => authenticated === null
             ? <Component {...params} {...props}/>
             : <Redirect to={{ pathname:"/app" }}/>
          }

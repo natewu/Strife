@@ -54,4 +54,3 @@ export async function handleLogin(email, password, handleError, e){
       handleError("email or password is incorrect");
    }
 }
-

@@ -10,7 +10,10 @@ import Authentication, {authType} from "pages/auth/Authentication.js";
 import Logout from "pages/auth/Logout.js";
 import './Strife.scss';
 
-export default class Strife extends React.Component{
+import { useSelector, useDispatch } from "react-redux";
+import { login, selectUser, logout } from "redux/reducers/userSlice.js";
+
+/* export default class Strife extends React.Component{
    constructor(props){
       super(props);
 
@@ -53,45 +56,79 @@ export default class Strife extends React.Component{
          </Router>
       );
    }
-}
+} */
 
-/* export function Strife() {
-   const [Auth, setAuth] = useState(null);
+export default function Strife() {
+   // const [Auth, setAuth] = useState(null);
    const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
-      console.log("Running auth");
-      const checkAuth = () => {
-         auth().onAuthStateChanged((user) => {
-            if(user){
-               setAuth(true);
-               setLoading(false);
-               console.log("success");
-            }
-            else{
-               setAuth(false);
-               setLoading(false);
-               console.log("fail");
-            }
-         });
-      }
-      console.log("done");
-      return checkAuth;
-   });
+   const dispatch = useDispatch();
+
+   // useEffect(() => {
+   //    console.log("Running auth");
+   //    const checkAuth = () => {
+   //       auth().onAuthStateChanged((user) => {
+   //          if(user){
+   //             setAuth(true);
+   //             setLoading(false);
+   //             console.log("success");
+   //          }
+   //          else{
+   //             setAuth(false);
+   //             setLoading(false);
+   //             console.log("fail");
+   //          }
+   //       });
+   //    }
+   //    console.log("done");
+   //    return checkAuth;
+   // });
+
+   useEffect(()=>{
+      auth.onAuthStateChanged((authUser) => {
+         if(authUser){
+            console.log(authUser.uid)
+            dispatch(login({
+               auth: true,
+               uid: authUser.uid,
+               // photo: authUser.photoURL,
+               email: authUser.email,
+               // displayName: authUser.displayName,
+            }));
+            setLoading(false);
+         }
+         else{
+            dispatch(logout());
+            setLoading(false);
+         }
+      })
+   }, [dispatch]);
+
+   const user = useSelector(selectUser);
 
    return loading  === true ? <h2>loading... </h2> : ( //add loading
       <Router>
-         
+         {/* {console.log(user.auth)} */}
          <Switch>
             <Route exact path="/" component={Home}/>
-            <PrivateRoute path="/app" authenticated={Auth} component={App}/>
-            <PrivateRoute path="/logout" authenticated={Auth} component={Logout}/>
-            <PublicRoute path="/Login" authenticated={Auth} component={Login}/>
-            <PublicRoute path="/Signup" authenticated={Auth} component={Signup}/>
+            <PrivateRoute path="/app" authenticated={user} component={App}/>
+            <PublicRoute path="/Login" authenticated={user} component={Authentication} params={{authType: true}}/>
+            <PublicRoute path="/Register" authenticated={user} component={Authentication} params={{authType: authType.register}}/>
+            <PrivateRoute path="/Logout" authenticated={user} component={Logout}/>
             <Route path="*">
-               404 Not Found
+               <p>404 Not Found</p>
             </Route>
+            
          </Switch>
       </Router>
    );
-} */
+}
+
+
+/* {user ? (
+   <div>
+      <App/>
+   </div>
+) : (
+   <h2> log in</h2>
+)} */

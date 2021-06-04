@@ -2,11 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Strife from './Strife';
+import { store } from 'redux/store.js';
+import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Strife />
+    <Provider store={store}>
+      <Strife />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
