@@ -161,16 +161,16 @@
     }
     .user__details{
         flex: 1;
-        padding: 10px;
+        padding: 5px 10px;
     }
     .username{
         color: white;
-        font-size: 15px;
+        font-size: 14px;
         margin: 0;
         text-align: left;
     }
     .user__tag{
-        font-size: 13px;
+        font-size: 12px;
         margin: 0;
         text-align: left;
         // color: Strife.$channels-default;
@@ -182,7 +182,7 @@
         *{
             color: Strife.$channels-default;
             cursor: pointer;
-            padding: 1px 3px;
+            padding: 1px 4px;
             &:hover{
                 color: Strife.$channels-hover;
             }

@@ -85,9 +85,9 @@ export function UserInfo(){
    const user = useSelector(selectUser);
    return(
       <div className="user__info">
-         <Avatar className="user__avatar" src="https://th.bing.com/th/id/Rca1aaa7e26e576f18f4ab3c72723b80c?rik=C9IVBiSZ2QX2Kw&pid=ImgRaw"/>
+         <Avatar className="user__avatar" src={user.photo}/>
          <div className="user__details">
-            <h4 className="username">{app.auth().currentUser.email} {user.uid} </h4>
+            <h4 className="username">{user.displayName} </h4>
             <p className="user__tag">#0001</p>
          </div>
          <div className="user__controlIcons">

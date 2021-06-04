@@ -91,9 +91,9 @@ export default function Strife() {
             dispatch(login({
                auth: true,
                uid: authUser.uid,
-               // photo: authUser.photoURL,
+               photo: authUser.photoURL,
                email: authUser.email,
-               // displayName: authUser.displayName,
+               displayName: authUser.displayName,
             }));
             setLoading(false);
          }

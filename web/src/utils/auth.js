@@ -5,7 +5,7 @@ export async function handleRegister(email, username, password, confirmPass, han
 
    async function Register(){
       try {
-         await app.auth().createUserWithEmailAndPassword(email, password).then(()=>{
+         await app.auth().createUserWithEmailAndPassword(email, password).then((user)=>{
             db.collection("users").doc(app.auth().currentUser.uid).set({
                email: app.auth().currentUser.email,
                username: username,
@@ -15,6 +15,16 @@ export async function handleRegister(email, username, password, confirmPass, han
             }).catch(error =>{
                console.log(error);
             });
+
+            user.user.updateProfile({
+               displayName: username,
+               photoURL: "https://th.bing.com/th/id/R1ffc41f79ca7a7ebfcbfa0de38799961?rik=hiDbLDUBYAxgMQ&pid=ImgRaw"
+            }).then(()=>{
+               console.log(user.user.displayName);
+            }).catch((err)=>{
+               console.log(err);
+            })
+            
          }).then(()=>{
             console.log("Registration Success!");
          });
