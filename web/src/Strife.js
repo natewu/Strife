@@ -87,13 +87,12 @@ export default function Strife() {
    useEffect(()=>{
       auth.onAuthStateChanged((authUser) => {
          if(authUser){
-            console.log(authUser.uid)
             dispatch(login({
                auth: true,
                uid: authUser.uid,
                photo: authUser.photoURL,
                email: authUser.email,
-               displayName: authUser.displayName,
+               username: authUser.displayName,
             }));
             setLoading(false);
          }
@@ -108,7 +107,6 @@ export default function Strife() {
 
    return loading  === true ? <h2>loading... </h2> : ( //add loading
       <Router>
-         {/* {console.log(user.auth)} */}
          <Switch>
             <Route exact path="/" component={Home}/>
             <PrivateRoute path="/app" authenticated={user} component={App}/>
@@ -123,12 +121,3 @@ export default function Strife() {
       </Router>
    );
 }
-
-
-/* {user ? (
-   <div>
-      <App/>
-   </div>
-) : (
-   <h2> log in</h2>
-)} */

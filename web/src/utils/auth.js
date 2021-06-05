@@ -34,7 +34,6 @@ export async function handleRegister(email, username, password, confirmPass, han
       }
    }
 
-
    await db.collection("users").where("username", "==", username).get().then((snapshot)=>{
       if(snapshot.empty){
          (email === null) ? handleError("email cannot be empty") 

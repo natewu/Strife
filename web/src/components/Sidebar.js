@@ -87,7 +87,7 @@ export function UserInfo(){
       <div className="user__info">
          <Avatar className="user__avatar" src={user.photo}/>
          <div className="user__details">
-            <h4 className="username">{user.displayName} </h4>
+            <h4 className="username">{user.username}</h4>
             <p className="user__tag">#0001</p>
          </div>
          <div className="user__controlIcons">
