@@ -1,6 +1,12 @@
-import React from 'react';
-import app, {db} from "api/base.js";
+import React, {useState, useEffect} from 'react';
 import "styles/Sidebar.scss";
+import app, {db} from "api/base.js";
+import {createChannel} from "utils/channels.js";
+//Redux
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "redux/reducers/userSlice.js";
+import { setChannelInfo } from "redux/reducers/appSlice.js";
+//Material UI
 import GuildList from "components/GuildList.js";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import AddIcon from '@material-ui/icons/Add';
@@ -10,8 +16,7 @@ import HeadsetIcon from '@material-ui/icons/Headset';
 import MicIcon from '@material-ui/icons/Mic';
 import {Avatar} from "@material-ui/core";
 
-import { useSelector } from "react-redux";
-import { selectUser } from "redux/reducers/userSlice.js";
+
 
 export default function Sidebar() {
    return (
@@ -30,7 +35,7 @@ export function GuildInfo(){
       <div className="guild__info">
          <GuildOptions guildName="Guild"/>
          <div className="guild__channels">
-            <Category categoryName="Text Channels" channels={<Channel channelName="General"/>}/>
+            <Category categoryName="Text Channels"/>
          </div>
       </div>
    );
@@ -48,8 +53,19 @@ export function GuildOptions({guildName}){
 }
 
 export function Channel({id, channelName}){
+
+   const dispatch = useDispatch();
+   // console.log(id)
    return(
-      <div className="channel">
+      <div className="channel" 
+         onClick={() => {
+            dispatch(
+               setChannelInfo({
+                  channelId: id,
+                  channelName: channelName,
+               })
+            )
+         }}>
          <h4 className="channel__name">
             <span className="channel__hash">#</span>
             {channelName}
@@ -59,6 +75,20 @@ export function Channel({id, channelName}){
 }
 
 export function Category({id, categoryName}){
+
+   const [channels, setChannels] = useState([]);
+
+   useEffect(() => {
+      db.collection("channels").onSnapshot((snapshot) => 
+         setChannels(
+            snapshot.docs.map((doc) => ({
+               id: doc.id,
+               details: doc.data()
+            }))
+         )
+      )
+   }, []);
+
    return(
       <div className={"category__container"}>
          <div className="category">
@@ -69,13 +99,13 @@ export function Category({id, categoryName}){
                <h5 className="category__name">{categoryName}</h5>
             </div>
             <div className="category__add">
-               <AddIcon fontSize="small"/>
+               <AddIcon onClick={() => createChannel()} fontSize="small"/>
             </div>
          </div>
       <div className="category__channels">
-         <Channel channelName="general"/>
-         <Channel channelName="general2"/>
-         <Channel channelName="general3"/>
+         {channels.map(channel => (
+            <Channel key={channel.id} id={channel.id} channelName={channel.details.channelName}/>
+         ))}
       </div>
    </div>
    );

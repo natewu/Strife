@@ -1,37 +1,66 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "styles/Chat.scss";
+import {sendMessage} from "utils/chat.js";
+
+//Redux
+import { useSelector } from "react-redux";
+import { selectChannelId, selectChannelName } from "redux/reducers/appSlice.js";
+
+//Material UI
 import {TextField} from "@material-ui/core";
 import {Avatar} from "@material-ui/core";
+import { db } from "api/base";
+import { selectUser } from "redux/reducers/userSlice";
+
 
 export default function Chat() {
+
+   const channelId = useSelector(selectChannelId);
+   const channelName = useSelector(selectChannelName);
+
+   useEffect(() => {
+      document.title = "Strife - " + channelName;
+   }, [channelName]);
+
    return (
       <div className="Chat">
-         <ChatHeader channelName="general" description="everything basically"/>
-         <TextArea channelName="general" description="everything basically."/>
-         <UserInput channelName="message #general"/>
+         <ChatHeader channelName={channelName} description="everything basically"/>
+         <TextArea id={channelId}/>
+         <UserInput channelName={channelName} channelId={channelId}/>
       </div>
    )
 }
 
-function TextArea({channelName, description}) {
+function TextArea({id}) {
+
+   const [messages, setMessages] = useState([]);
+
+   useEffect(() => {
+      if(id !== null ){
+         db.collection("channels")
+         .doc(id)
+         .collection("messages")
+         .orderBy("timestamp", "asc")
+         .onSnapshot((snapshot) => 
+            setMessages(
+               snapshot.docs.map((doc) => ({
+                  id: doc.id,
+                  ...doc.data()
+               }))
+            )
+         );
+      }
+      else{
+         console.log("no messages");
+      }   
+   }, [id])
+
    return (
       <div className="text__area">
          <div className="channel__content">
-            <Message message="hi" username="bob" timestamp="1pm"/>
-            <Message message="hi 2"/>
-            <Message message="hi 3"/>
-            <Message message="hi 4"/>
-            <Message message="hi 5"/>
-            <Message message="hi 6"/>
-            <Message message="hi 7"/>
-            <Message message="hi 8"/>
-            <Message message="hi 9"/>
-            <Message message="hi 10"/>
-            <Message message="hi 11"/>
-            <Message message="hi 12"/>
-            <Message message="hi 13"/>
-            <Message message="hi 14"/>
-            <Message message="hi 15"/>
+            {messages.map(message => ( 
+               <Message key={message.id} {...message}/>   
+            ))}
          </div>
       </div>
    );
@@ -57,16 +86,16 @@ function ChatHeader({channelName, description}){
    );  
 }
 
-function Message({message, username, timestamp}){
+function Message({message, user, timestamp}){
    return(
       <div className="message__box">
          <div className="message">
-            <Avatar className="Avatar"/>
+            <Avatar className="Avatar" src={user.photo}/>
             <div className="message__info">
                <h4 className="message__user">
-                  {username}
+                  {user.username}
                   <span className="message__timestamp">
-                     {timestamp}
+                     {new Date(timestamp?.toDate()).toLocaleString()}
                   </span>
                </h4>
                <p className="message__content">
@@ -81,10 +110,23 @@ function Message({message, username, timestamp}){
    );
 }
 
-function UserInput({channelName}){
+function UserInput({channelName, channelId}){
+
+   const [input, setInput] = useState("");
+   const user = useSelector(selectUser);
+
    return (
-      <div className="user__input">
-         <TextField className="text__input" variant="outlined" label={channelName} fullWidth size="small"/>
-      </div>
+      <form className="user__input">
+         <TextField className="text__input" variant="outlined" size="small" fullWidth  
+            value={input}
+            label={channelName !== null ? (`message #${channelName}`) : "Select a channel"}  
+            disabled={channelName !== null ? false : true}
+            onChange={(e) => setInput(e.target.value)}
+         />
+         <button className="text__sendMessage" style={{display:"none"}} type="submit"
+            disabled={channelName !== null ? false : true}
+            onClick={(e) => sendMessage(e, input, channelId, user, setInput)}
+         />
+      </form>
    );
 }
