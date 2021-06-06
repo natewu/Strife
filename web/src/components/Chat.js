@@ -40,23 +40,25 @@ function TextArea({id}) {
 
    useEffect(() => {
       if(id !== null ){
-         db.collection("channels")
-         .doc(id)
-         .collection("messages")
-         .orderBy("timestamp", "asc")
-         .onSnapshot((snapshot) => 
-            setMessages(
+         // the return value of onSnapshot is a function that cancels the listener
+         const cancel = db.collection("channels")
+            .doc(id)
+            .collection("messages")
+            .orderBy("timestamp", "asc")
+            .onSnapshot((snapshot) => 
+               setMessages(
                snapshot.docs.map((doc) => ({
                   id: doc.id,
                   ...doc.data()
                }))
-            )
-         );
+               )
+            );
+         // useEffect allows us to return a function to run when the effect is cancelled
+         return () => cancel()
       }
       else{
-         console.log("no messages");
+        console.log("no messages");
       }   
-      
    }, [id]);
 
    return (
