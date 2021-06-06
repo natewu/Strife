@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import "styles/Chat.scss";
 import {sendMessage} from "utils/chat.js";
 
 //Redux
 import { useSelector } from "react-redux";
-import { selectChannelId, selectChannelName } from "redux/reducers/appSlice.js";
+import { selectChannelId, selectChannelName, setScrollRef } from "redux/reducers/appSlice.js";
 
 //Material UI
 import {TextField} from "@material-ui/core";
@@ -12,6 +12,7 @@ import {Avatar} from "@material-ui/core";
 import { db } from "api/base";
 import { selectUser } from "redux/reducers/userSlice";
 
+export var scrollRef = null;
 
 export default function Chat() {
 
@@ -34,6 +35,8 @@ export default function Chat() {
 function TextArea({id}) {
 
    const [messages, setMessages] = useState([]);
+   const autoScroll = useRef();
+   scrollRef = autoScroll; 
 
    useEffect(() => {
       if(id !== null ){
@@ -53,15 +56,17 @@ function TextArea({id}) {
       else{
          console.log("no messages");
       }   
-   }, [id])
+      
+   }, [id]);
 
    return (
       <div className="text__area">
          <div className="channel__content">
             {messages.map(message => ( 
-               <Message key={message.id} {...message}/>   
+               <Message key={message.id} {...message}/>
             ))}
          </div>
+         <div ref={autoScroll} className="autoscroll"/>
       </div>
    );
 }

@@ -1,4 +1,5 @@
 import app, { db } from "api/base";
+import { scrollRef } from "components/Chat";
 import firebase from "firebase"
 
 export async function sendMessage(e, message, channelId, user, handleInput){
@@ -21,6 +22,7 @@ export async function sendMessage(e, message, channelId, user, handleInput){
          console.log(err);
       }).then(() => {
          handleInput("");
+         scrollRef.current.scrollIntoView({behavior:"smooth"});
       })
    }
    else{
