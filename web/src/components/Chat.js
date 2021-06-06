@@ -4,7 +4,7 @@ import {sendMessage} from "utils/chat.js";
 
 //Redux
 import { useSelector } from "react-redux";
-import { selectChannelId, selectChannelName, setScrollRef } from "redux/reducers/appSlice.js";
+import { selectChannelId, selectChannelName } from "redux/reducers/appSlice.js";
 
 //Material UI
 import {TextField} from "@material-ui/core";

@@ -1,4 +1,2 @@
 ## Strife
-Strife is an open source chat app.
-
-## It's time to ditch Discord.
+In development with bugs please check issues tab!!

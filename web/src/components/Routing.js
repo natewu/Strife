@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
 export function PrivateRoute({component: Component, authenticated, params, ...rest}){
