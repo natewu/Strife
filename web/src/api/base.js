@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/analytics";
 
 const app =  firebase.initializeApp({
     apiKey: process.env.REACT_APP_FIREBASE_KEY,
@@ -20,8 +21,10 @@ db.settings({timestampInSnapshots:true});
 
 export default app;
 const auth = firebase.auth();
+const analytics = firebase.analytics();
 
 export {
     db,
     auth,
+    analytics
 };
