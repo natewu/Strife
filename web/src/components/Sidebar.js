@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import "styles/Sidebar.scss";
-import app, {db} from "api/base.js";
+import {db} from "api/base.js";
 import {createChannel} from "utils/channels.js";
 //Redux
 import { useSelector, useDispatch } from "react-redux";

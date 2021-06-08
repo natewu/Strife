@@ -36,24 +36,81 @@ function TextArea({id}) {
 
    const [messages, setMessages] = useState([]);
    const autoScroll = useRef();
+   const textArea = useRef();
    scrollRef = autoScroll; 
 
+   const [fetch, setFetch] = useState(false);
+   const [moreMessages, setMoreMessages] = useState(true);
+
+   const loadPrevious = useRef();
+
+   let loadMore = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0
+   }
+
+   let observer = new IntersectionObserver(() => loadMessages() , loadMore)
+   
+   function loadMessages(){
+      if(fetch === true){ console.log("already fetching"); return;}
+      if(messages.length > 10){
+         setFetch(true);
+         console.log("fetching");
+         var posts = db.collection("channels")
+         .doc(id)
+         .collection("messages")
+         .orderBy("timestamp", "desc")
+         
+         if(messages.length > 0){
+            console.log(messages.length)
+            const lastMessage = messages[messages.length - 1];
+            posts = posts.startAfter(lastMessage);
+         }
+
+         posts.limit(5)
+         .get().then((snapshot) => {
+            if(snapshot.docs.length === 0){
+               setMoreMessages(false);
+            }
+            setMessages(
+               snapshot.docs.reverse().map((doc) => ({
+                  id: doc.id,
+                  ...doc.data()
+            })))
+         }).then(setFetch(false));
+      }
+   }
+
+/*    function checkScroll(e){
+      console.log("hello")
+      let bottom = (
+         ((e.scrollHeight - e.scrollTop) === e.clientHeight) 
+         && (fetch === false) 
+         && (moreMessages === true)
+      );
+      if(bottom){
+         console.log("bottom")
+         loadMessages();
+      } 
+   }
+ */
    useEffect(() => {
       if(id !== null ){
          // the return value of onSnapshot is a function that cancels the listener
-         
          const cancel = db.collection("channels")
             .doc(id)
             .collection("messages")
-            .orderBy("timestamp", "asc")
+            .orderBy("timestamp", "desc")
+            .limit(15)
             .onSnapshot((snapshot) => 
                setMessages(
-               snapshot.docs.map((doc) => ({
+               snapshot.docs.reverse().map((doc) => ({
                   id: doc.id,
                   ...doc.data()
                }))
                )
-            ); 
+            );
          // useEffect allows us to return a function to run when the effect is cancelled
          return () => cancel()
       }
@@ -62,8 +119,20 @@ function TextArea({id}) {
       }   
    }, [id]);
 
+   //very bad on channel load auto scroll implementation
+   useEffect(() => {
+      if(id){
+         autoScroll.current.scrollIntoView();
+         // console.log(messages.length)
+         
+         observer.observe(document.querySelector(".loadPrevious"));
+         
+      }
+   }, [id]);
+   
    return (
-      <div className="text__area">
+      <div className="text__area" useRef={textArea} >
+         <div ref={loadPrevious} className="loadPrevious"/>
          <div className="channel__content">
             {messages.map(message => ( 
                <Message key={message.id} {...message}/>

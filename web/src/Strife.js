@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { auth } from "api/base.js";
 import { PublicRoute, PrivateRoute } from "components/Routing.js";
 // import { TextField, InputAdornment } from "@material-ui/core";
