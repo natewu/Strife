@@ -35,8 +35,8 @@ export default function Chat() {
 function TextArea({id}) {
 
    const [messages, setMessages] = useState([]);
+   const [mapped, setMapped] = useState(false);
    const autoScroll = useRef();
-   const textArea = useRef();
    scrollRef = autoScroll; 
 
    const [fetch, setFetch] = useState(false);
@@ -50,19 +50,18 @@ function TextArea({id}) {
       threshold: 1.0
    }
 
-   let observer = new IntersectionObserver(() => loadMessages() , loadMore)
-   
    function loadMessages(){
       if(fetch === true){ console.log("already fetching"); return;}
+      
       if(messages.length > 10){
          setFetch(true);
-         console.log("fetching");
+         console.log("fetching " +id);
          var posts = db.collection("channels")
          .doc(id)
          .collection("messages")
          .orderBy("timestamp", "desc")
          
-         if(messages.length > 0){
+         if(messages.length !== 0){
             console.log(messages.length)
             const lastMessage = messages[messages.length - 1];
             posts = posts.startAfter(lastMessage);
@@ -74,7 +73,7 @@ function TextArea({id}) {
                setMoreMessages(false);
             }
             setMessages(
-               snapshot.docs.reverse().map((doc) => ({
+               snapshot.docs.map((doc) => ({
                   id: doc.id,
                   ...doc.data()
             })))
@@ -110,7 +109,8 @@ function TextArea({id}) {
                   ...doc.data()
                }))
                )
-            );
+            )
+         autoScroll.current.scrollIntoView({behavior:"smooth"});
          // useEffect allows us to return a function to run when the effect is cancelled
          return () => cancel()
       }
@@ -122,16 +122,17 @@ function TextArea({id}) {
    //very bad on channel load auto scroll implementation
    useEffect(() => {
       if(id){
-         autoScroll.current.scrollIntoView();
+         // autoScroll.current.scrollIntoView();
          // console.log(messages.length)
-         
-         observer.observe(document.querySelector(".loadPrevious"));
+
+         let observer = new IntersectionObserver(() => loadMessages() , loadMore)
+         // observer.observe(document.querySelector(".loadPrevious"));
          
       }
    }, [id]);
    
    return (
-      <div className="text__area" useRef={textArea} >
+      <div className="text__area">
          <div ref={loadPrevious} className="loadPrevious"/>
          <div className="channel__content">
             {messages.map(message => ( 
