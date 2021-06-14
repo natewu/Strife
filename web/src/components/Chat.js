@@ -33,9 +33,8 @@ export default function Chat() {
 }
 
 function TextArea({id}) {
-
+   const [totalMessages, setTotalMessages] = useState([]);
    const [messages, setMessages] = useState([]);
-   const [mapped, setMapped] = useState(false);
    const autoScroll = useRef();
    scrollRef = autoScroll; 
 
@@ -43,12 +42,6 @@ function TextArea({id}) {
    const [moreMessages, setMoreMessages] = useState(true);
 
    const loadPrevious = useRef();
-
-   let loadMore = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 1.0
-   }
 
    function loadMessages(){
       if(fetch === true){ console.log("already fetching"); return;}
@@ -107,12 +100,33 @@ function TextArea({id}) {
                snapshot.docs.reverse().map((doc) => ({
                   id: doc.id,
                   ...doc.data()
-               }))
-               )
-            )
+               })))
+            );
+
+            const cancelOne = db.collection("channels")
+            .doc(id)
+            .collection("messages")
+            .orderBy("timestamp", "desc")
+            .limit(1)
+            .onSnapshot((snapshot) => 
+               totalMessages.push(
+               snapshot.docs.reverse().map((doc) => ({
+                  id: doc.id,
+                  ...doc.data()
+               })))
+            );
+         setTotalMessages([]);
          autoScroll.current.scrollIntoView({behavior:"smooth"});
+
          // useEffect allows us to return a function to run when the effect is cancelled
-         return () => cancel()
+         return () => {
+            if(totalMessages.length === 0){
+               cancel();
+            }
+            else{
+               cancelOne();
+            }
+         }
       }
       else{
         console.log("no messages");
@@ -120,20 +134,51 @@ function TextArea({id}) {
    }, [id]);
 
    //very bad on channel load auto scroll implementation
+   function checkVisible(e){
+      const [visible] = e;
+      // console.log("load!", visible.isIntersecting)
+      if(visible.isIntersecting){
+         console.log("load!")
+      }
+   }
+
    useEffect(() => {
+      let loadMore = {
+         root: null,
+         rootMargin: "20px",
+         threshold: [1]
+      }
+
+      let observer = new IntersectionObserver((e) => checkVisible(e) , loadMore)
+
       if(id){
          // autoScroll.current.scrollIntoView();
          // console.log(messages.length)
-
-         let observer = new IntersectionObserver(() => loadMessages() , loadMore)
-         // observer.observe(document.querySelector(".loadPrevious"));
+         if(loadPrevious.current){
+            observer.observe(loadPrevious.current);
+         }
          
       }
+      return () => {
+         if(loadPrevious.current){
+            observer.unobserve(loadPrevious.current);
+         }
+      }
+      
    }, [id]);
    
+   useEffect(() => {
+      if(messages.length !== 0){
+            setTotalMessages([]);
+
+            totalMessages.push(...messages);
+            console.log(totalMessages)
+      }
+   }, [messages])
+
    return (
       <div className="text__area">
-         <div ref={loadPrevious} className="loadPrevious"/>
+         <div ref={loadPrevious} className="load__previous"/>
          <div className="channel__content">
             {messages.map(message => ( 
                <Message key={message.id} {...message}/>
