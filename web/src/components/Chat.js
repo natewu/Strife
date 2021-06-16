@@ -39,6 +39,7 @@ function TextArea({id}) {
    scrollRef = autoScroll; 
 
    const [fetch, setFetch] = useState(false);
+   const [fetchIndex, setFetchIndex] = useState(1);
    const [moreMessages, setMoreMessages] = useState(true);
 
    const loadPrevious = useRef();
@@ -56,8 +57,9 @@ function TextArea({id}) {
          
          if(messages.length !== 0){
             console.log(messages.length)
-            const lastMessage = messages[messages.length - 1];
+            const lastMessage = messages.reverse()[messages.length - 1]; //try messages.reverse().doc[messages.length - 1]
             posts = posts.startAfter(lastMessage);
+            console.log(lastMessage)
          }
 
          posts.limit(5)
@@ -66,10 +68,14 @@ function TextArea({id}) {
                setMoreMessages(false);
             }
             setMessages(
-               snapshot.docs.map((doc) => ({
+               snapshot.docs.reverse().map((doc) => ({
                   id: doc.id,
                   ...doc.data()
             })))
+            snapshot.docs.map((doc) => console.log({
+               id: doc.id,
+               ...doc.data()
+            }))
          }).then(setFetch(false));
       }
    }
@@ -100,21 +106,22 @@ function TextArea({id}) {
                snapshot.docs.reverse().map((doc) => ({
                   id: doc.id,
                   ...doc.data()
-               })))
+               }))),
+               setFetchIndex(fetchIndex+1,console.log(fetchIndex))
             );
 
-            const cancelOne = db.collection("channels")
-            .doc(id)
-            .collection("messages")
-            .orderBy("timestamp", "desc")
-            .limit(1)
-            .onSnapshot((snapshot) => 
-               totalMessages.push(
-               snapshot.docs.reverse().map((doc) => ({
-                  id: doc.id,
-                  ...doc.data()
-               })))
-            );
+            // const cancelOne = db.collection("channels")
+            // .doc(id)
+            // .collection("messages")
+            // .orderBy("timestamp", "desc")
+            // .limit(1)
+            // .onSnapshot((snapshot) => 
+            //    totalMessages.push(
+            //    ...snapshot.docs.reverse().map((doc) => ({
+            //       id: doc.id,
+            //       ...doc.data()
+            //    })))
+            // );
          setTotalMessages([]);
          autoScroll.current.scrollIntoView({behavior:"smooth"});
 
@@ -124,7 +131,7 @@ function TextArea({id}) {
                cancel();
             }
             else{
-               cancelOne();
+               // cancelOne();
             }
          }
       }
@@ -135,10 +142,28 @@ function TextArea({id}) {
 
    //very bad on channel load auto scroll implementation
    function checkVisible(e){
-      const [visible] = e;
-      // console.log("load!", visible.isIntersecting)
-      if(visible.isIntersecting){
+      /* function cancelOne(){
+         db.collection("channels")
+         .doc(id)
+         .collection("messages")
+         .orderBy("timestamp", "desc")
+         .limit(1)
+         .onSnapshot((snapshot) => 
+            setTotalMessages((totalMessages => [
+               ...totalMessages,
+               ...snapshot.docs.reverse().map((doc) => ({
+                  id: doc.id,
+                  ...doc.data()
+               }))
+            ]), console.log(totalMessages))
+         );
+      } */
+      if(e[0].isIntersecting){
          console.log("load!")
+         // cancelOne()
+         setFetchIndex((fetchIndex) => fetchIndex+1);
+         console.log(totalMessages)
+         console.log(fetchIndex)
       }
    }
 
@@ -168,17 +193,23 @@ function TextArea({id}) {
    }, [id]);
    
    useEffect(() => {
-      if(messages.length !== 0){
-            setTotalMessages([]);
-
-            totalMessages.push(...messages);
-            console.log(totalMessages)
-      }
-   }, [messages])
+      // if(messages.length !== 0){
+      //       // setTotalMessages([]);
+      //       console.log(messages)
+      //       setTotalMessages(messages);
+      //       console.log(totalMessages)
+      // }
+      console.log(messages)
+      return(setTotalMessages([]))
+   }, [id])
+   useEffect(() => {
+      // setTotalMessages(messages.concat())
+      loadMessages()
+   }, [fetchIndex])
 
    return (
       <div className="text__area">
-         <div ref={loadPrevious} className="load__previous"/>
+         <div ref={loadPrevious} className="load__previous">{totalMessages}</div>
          <div className="channel__content">
             {messages.map(message => ( 
                <Message key={message.id} {...message}/>
