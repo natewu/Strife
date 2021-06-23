@@ -66,10 +66,10 @@ export function Channel({id, channelName}){
                })
             )
          }}>
-         <h4 className="channel__name">
+         <div className="channel__name">
             <span className="channel__hash">#</span>
-            {channelName}
-         </h4>
+            <span className="channel__nameText">{channelName}</span>
+         </div>
       </div>
    );
 }

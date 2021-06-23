@@ -75,20 +75,25 @@
     .channel__name{
         align-items: center;
         display: flex;
-        font-size: 15px;
-        font-weight: 400;
-        letter-spacing: 0.25px;
         line-height: 20px;
-        margin: 0;
+        margin: 2px 0;
+        overflow: hidden;
         padding: 6px 0;
-        text-align: left;
-        text-overflow: ellipsis;
-        white-space: normal;
     }
     .channel__hash{
         font-size: 24px;
         font-weight: 400;
         margin: 0 6px;
+    }
+    .channel__nameText{
+        flex: 1;
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: 0.25px;
+        overflow: hidden;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 .category__container{
