@@ -164,7 +164,7 @@ function TextArea({id}) {
    return (
       <div className="text__area">
          <div ref={loadPrevious} className="load__previous">{totalMessages}</div>
-         <div className="channel__content" onClick={()=>loadMessages()}>
+         <div className="channel__content" /* onClick={()=>loadMessages()} */>
             {messages.map(message => ( 
                <Message key={message.id} {...message}/>
                // console.log("new", message)

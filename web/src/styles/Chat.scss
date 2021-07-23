@@ -35,7 +35,7 @@
     }
     .channel__content{
         flex: 20 0 auto;
-        margin: 2rem;
+        margin: 1rem 1rem 0.5rem 1rem;
     }
     .load__previous{
         min-height: 1rem;
@@ -87,13 +87,17 @@
     }
 }
 .message__box{
+    margin-top: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: Strife.$bottom-shadow;
-    padding: 10px 0;
+    // box-shadow: Strife.$bottom-shadow;
+    padding: 5px 20px;
     *{
         font-size: 14px;
+    }
+    &:hover{
+        background-color: Strife.$message-hover-highlight;
     }
     .message{
         display: flex;
@@ -110,12 +114,16 @@
             margin: 0 0 0 20px;
             .message__user{
                 margin: 0;
-                font-weight: 500;
+                font-size: 1rem;
+                line-height: 1.375rem;
+                font-weight: 600;
             }
             .message__timestamp{
                 margin: 0 10px;
                 font-weight: 400;
-                font-size: 13px;
+                font-size: 0.75rem;
+                line-height: 1.375rem;
+                filter: opacity(0.8);
             }
             .message__content{
                 margin: 1px 0;
