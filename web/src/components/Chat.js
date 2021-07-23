@@ -131,7 +131,7 @@ function TextArea({id}) {
       let loadMore = {
          root: null,
          rootMargin: "20px",
-         threshold: [1]
+         threshold: [0.5]
       }
 
       let observer = new IntersectionObserver((e) => checkVisible(e) , loadMore)
