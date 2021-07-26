@@ -79,7 +79,7 @@ function TextArea({id}) {
                setFetchIndex(fetchIndex+1, console.log(fetchIndex)),
                setMoreMessages(true)
             );
-         setLoaded(true)
+         
          // setTotalMessages([]);
          // autoScroll.current.scrollIntoView({behavior:"smooth"});
 
