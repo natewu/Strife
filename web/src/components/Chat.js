@@ -16,7 +16,6 @@ import { selectUser } from "redux/reducers/userSlice";
 export var scrollRef = null;
 
 export default function Chat() {
-
    const channelId = useSelector(selectChannelId);
    const channelName = useSelector(selectChannelName);
 
@@ -33,11 +32,28 @@ export default function Chat() {
    )
 }
 
+function AutoScroll({loaded, setLoaded}){
+   const autoScroll = useRef();
+   // setScrolled(false);
+   scrollRef = autoScroll; 
+   useEffect(() => {
+      if(loaded){
+         autoScroll.current.scrollIntoView(/* {behavior:"smooth"} */);
+         console.log("scrolled", loaded)
+      }
+      else{
+         console.log("scrolled", loaded)
+      }
+   }, [loaded]);
+   return <div ref={autoScroll}  className="autoscroll"/>;
+}
+
 function TextArea({id}) {
-   const [totalMessages, setTotalMessages] = useState([]);
+   // const [totalMessages, setTotalMessages] = useState([]);
    const [messages, setMessages] = useState([]);
    const autoScroll = useRef();
-   scrollRef = autoScroll; 
+   scrollRef = autoScroll;
+   const [loaded, setLoaded] = useState(false);
 
    const [fetch, setFetch] = useState(false);
    const [fetchIndex, setFetchIndex] = useState(1);
@@ -45,46 +61,7 @@ function TextArea({id}) {
 
    const loadPrevious = useRef();
 
-   function loadMessages(){
-      if(fetch === true){ console.log("already fetching"); return;}
-      
-      if(messages.length > 10){
-         setFetch(true);
-         // console.log("fetching " +id);
-         var posts = db.collection("channels")
-         .doc(id)
-         .collection("messages")
-         .orderBy("timestamp", "desc")
-         
-         if(messages.length !== 0){
-            // console.log(messages.length)
-            const lastMessage = messages.reverse()[messages.length - 1]; //try messages.reverse().doc[messages.length - 1]
-            posts = posts.startAfter(lastMessage.timestamp);
-            // console.log(lastMessage, "last message")
-         }
-
-         posts.limit(5)
-         .get().then((snapshot) => {
-            if(snapshot.docs.length === 0){
-               setMoreMessages(false);
-            }
-            setMessages([
-               ...snapshot.docs.reverse().map((doc) => ({
-                  id: doc.id,
-                  ...doc.data()
-               })),
-               ...messages.reverse()
-            ])
-           
-            //for debug messages
-            /* snapshot.docs.map((doc) => console.log({
-               id: doc.id,
-               ...doc.data()
-            })) */
-         }).then(setFetch(false));
-      }
-   }
-
+   //fetches messages for pagination
    useEffect(() => {
       if(id !== null ){
          // the return value of onSnapshot is a function that cancels the listener
@@ -99,33 +76,22 @@ function TextArea({id}) {
                   id: doc.id,
                   ...doc.data()
                }))),
-               setFetchIndex(fetchIndex+1,console.log(fetchIndex))
+               setFetchIndex(fetchIndex+1, console.log(fetchIndex)),
+               setMoreMessages(true)
             );
-
-         setTotalMessages([]);
-         autoScroll.current.scrollIntoView({behavior:"smooth"});
+         setLoaded(true)
+         // setTotalMessages([]);
+         // autoScroll.current.scrollIntoView({behavior:"smooth"});
 
          // useEffect allows us to return a function to run when the effect is cancelled
          return () => {
-            setMessages([])
+            setMoreMessages(true);
+            setMessages([]);
+            setLoaded(false);
             cancel();
          }
       }
-      else{
-        console.log("no messages");
-      }   
    }, [id]);
-
-   //very bad on channel load auto scroll implementation
-   function checkVisible(e){
-      if(e[0].isIntersecting){
-         console.log("load!")
-         // cancelOne()
-         setFetchIndex((fetchIndex) => fetchIndex+1);
-         // console.log(totalMessages)
-         console.log(fetchIndex)
-      }
-   }
 
    useEffect(() => {
       let loadMore = {
@@ -133,16 +99,24 @@ function TextArea({id}) {
          rootMargin: "20px",
          threshold: [0.5]
       }
-
-      let observer = new IntersectionObserver((e) => checkVisible(e) , loadMore)
+      //very bad on channel load auto scroll implementation
+      let observer = new IntersectionObserver((e) => {
+         if(e[0].isIntersecting){
+            if(moreMessages){
+               // console.log("loading messages", moreMessages);
+               setFetchIndex((fetchIndex) => fetchIndex+1);
+               // console.log(fetchIndex)
+            }
+            else{
+               console.log("no more messages to load." + moreMessages);
+            }
+         }
+      } , loadMore)
 
       if(id){
-         // autoScroll.current.scrollIntoView();
-         // console.log(messages.length)
          if(loadPrevious.current){
             observer.observe(loadPrevious.current);
-         }
-         
+         }  
       }
       return () => {
          if(loadPrevious.current){
@@ -150,27 +124,66 @@ function TextArea({id}) {
          }
       }
       
-   }, [id]);
+   }, [id, moreMessages]);
    
-   // useEffect(() => {
-   //    console.log(messages)
-   //    return(setTotalMessages([]))
-   // }, [id])
-
    useEffect(() => {
-      loadMessages()
+      // function loadMessages(){
+         if(fetch === true){ console.log("already fetching"); return;}
+         
+         if(moreMessages){
+            if(messages.length > 10){
+               setFetch(true);
+               var posts = db.collection("channels")
+               .doc(id)
+               .collection("messages")
+               .orderBy("timestamp", "desc")
+               
+               if(messages.length !== 0){
+                  const lastMessage = messages.reverse()[messages.length - 1];
+                  posts = posts.startAfter(lastMessage.timestamp);
+               }
+      
+               posts.limit(5)
+               .get().then((snapshot) => {
+                  if(snapshot.docs.length === 0){
+                     setMoreMessages(false);
+                     
+                  }
+                  setMessages([
+                     ...snapshot.docs.reverse().map((doc) => ({
+                        id: doc.id,
+                        ...doc.data()
+                     })),
+                     ...messages.reverse()
+                  ])
+                 
+                  //for debug messages
+                  /* snapshot.docs.map((doc) => console.log({
+                     id: doc.id,
+                     ...doc.data()
+                  })) */
+               }).then(setFetch(false));
+            }
+         }
+         else{
+            console.log("done")
+         }
+      // }
+      // console.log("no more messages" + moreMessages)
+      // loadMessages();
    }, [fetchIndex])
 
    return (
       <div className="text__area">
-         <div ref={loadPrevious} className="load__previous">{totalMessages}</div>
+         <div ref={loadPrevious} className="load__previous">{/* {totalMessages} */}</div>
          <div className="channel__content" /* onClick={()=>loadMessages()} */>
             {messages.map(message => ( 
                <Message key={message.id} {...message}/>
                // console.log("new", message)
             ))}
          </div>
-         <div ref={autoScroll} className="autoscroll"/>
+         {/* <div ref={autoScroll} className="autoscroll"/> */}
+         <AutoScroll loaded={loaded} setLoaded={setLoaded}/>
       </div>
    );
 }
