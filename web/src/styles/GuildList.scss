@@ -5,9 +5,35 @@
     flex-flow: column nowrap;
     background-color: Strife.$background;
     min-width: 72px;
-    flex: 1 1 auto;
+    height: 100vh;
+    flex: 1;
+    align-items: center;
     overflow:hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar{
+        display: none; 
+    }
     *{
         color: Strife.$primary;
     }
+    
+}
+.Guild__Item{
+    display: flex;
+    justify-content: center;
+    margin: 0 0 8px;
+    // height: 48px !important;
+    width: 72px !important;
+    font-size: 80px;
+    .Guild__Icon{
+        width: 42px !important;
+        height: 42px !important;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    
+}
+.Logo__DM{
+    margin-top: 0.5rem;
 }

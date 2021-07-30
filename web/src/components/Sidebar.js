@@ -16,8 +16,6 @@ import HeadsetIcon from '@material-ui/icons/Headset';
 import MicIcon from '@material-ui/icons/Mic';
 import {Avatar} from "@material-ui/core";
 
-
-
 export default function Sidebar() {
    return (
       <div className="sidebar">
