@@ -20,7 +20,7 @@ export default function Chat() {
    const channelName = useSelector(selectChannelName);
 
    useEffect(() => {
-      document.title = "Strife - " + channelName;
+      document.title = channelName !== null ? ("Strife - " + channelName) : ("Strife");
    }, [channelName]);
 
    return (
