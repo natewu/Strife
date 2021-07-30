@@ -5,7 +5,7 @@ import "styles/GuildList.scss"
 export default function GuildList() {
    return (
       <div className="Guild__List">
-         <Logo/>
+         <Logo appName="Strife"/>
          <Guild guildName={"Strife"}/>
          <Guild guildName={"Strife"}/>
          <Guild guildName={"Strife"}/>
@@ -45,11 +45,11 @@ export function Guild({id, guildName, color}){
       </div>
    )
 }
-export function Logo(){
+export function Logo({appName}){
    return(
       <div className="Guild__Item Logo__DM">
          <Avatar className="Guild__Icon" style={{backgroundColor:"rgb(235, 81, 81)"}} >
-            Strife
+            {appName.charAt(0)}
          </Avatar>
       </div>
    )
