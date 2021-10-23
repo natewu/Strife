@@ -14,16 +14,15 @@
     display: flex;
     flex-flow: column;
     grid-row: 2;
+    overflow-x: hidden;
     overflow-y: scroll;
-    // overflow-x: hidden;
     &::-webkit-scrollbar{
-        width: 6px;   
+        width: 6px;
     }
     &::-webkit-scrollbar-track{ 
         border-radius: 10px;
         box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.11);
         margin: 10px;
-        
     }
     &::-webkit-scrollbar-thumb{
         background-color: rgba(128, 128, 128, 0.308);
@@ -36,6 +35,7 @@
     .channel__content{
         flex: 20 0 auto;
         margin: 1rem 1rem 0.5rem 1rem;
+        // padding: 0 1rem;
     }
     .load__previous{
         min-height: 1rem;
@@ -88,11 +88,12 @@
 }
 .message__box{
     align-items: center;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
-    // box-shadow: Strife.$bottom-shadow;
     padding: 5px 20px;
+    width: 100%;
     *{
         font-size: 14px;
     }
@@ -102,7 +103,11 @@
     .message{
         align-items: center;
         display: flex;
+        flex: 1 1 0;
+        flex-flow: row;
         justify-content: flex-start;
+        overflow: hidden;
+        width: 100%;
         .message__content{
             margin: 0 10px;
         }
@@ -111,7 +116,8 @@
             display: flex;
             flex-flow: column nowrap;
             justify-content: flex-start;
-            margin: 0 0 0 20px;
+            margin: 0 20px 0 20px;
+            overflow: hidden;
             .message__user{
                 font-size: 1rem;
                 font-weight: 600;
@@ -127,6 +133,8 @@
             }
             .message__content{
                 margin: 1px 0;
+                overflow-wrap: break-word;
+                width: 100%;
             }
         }
     }
