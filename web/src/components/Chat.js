@@ -178,7 +178,7 @@ function TextArea({id}) {
          <div ref={loadPrevious} className="load__previous">{/* {totalMessages} */}</div>
          <div className="channel__content" /* onClick={()=>loadMessages()} */>
             {messages.map((message, index) => ( 
-               (index === loadAmount) ? (<Message ref={setInfiniteScroll} key={message.id} {...message} message="test"/>)
+               (index === loadAmount) ? (<Message ref={setInfiniteScroll} key={message.id} {...message}/>)
                : <Message key={message.id} {...message}/>
             ))}
          </div>
