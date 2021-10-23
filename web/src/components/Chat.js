@@ -14,6 +14,8 @@ import { db } from "api/base";
 import { selectUser } from "redux/reducers/userSlice";
 
 export var scrollRef = null;
+// export var setInfiniteScroll = null;
+export var loadAmount = 5;
 
 export default function Chat() {
    const channelId = useSelector(selectChannelId);
@@ -52,6 +54,7 @@ function TextArea({id}) {
    // const [totalMessages, setTotalMessages] = useState([]);
    const [messages, setMessages] = useState([]);
    const autoScroll = useRef();
+   const setInfiniteScroll = useRef();
    scrollRef = autoScroll;
    const [loaded, setLoaded] = useState(false);
 
@@ -127,7 +130,6 @@ function TextArea({id}) {
    }, [id, moreMessages]);
    
    useEffect(() => {
-      // function loadMessages(){
          if(fetch === true){ console.log("already fetching"); return;}
          
          if(moreMessages){
@@ -143,7 +145,7 @@ function TextArea({id}) {
                   posts = posts.startAfter(lastMessage.timestamp);
                }
       
-               posts.limit(5)
+               posts.limit(loadAmount)
                .get().then((snapshot) => {
                   if(snapshot.docs.length === 0){
                      setMoreMessages(false);
@@ -155,31 +157,29 @@ function TextArea({id}) {
                         ...doc.data()
                      })),
                      ...messages.reverse()
-                  ])
-                 
+                  ]);
+                  
                   //for debug messages
                   /* snapshot.docs.map((doc) => console.log({
                      id: doc.id,
                      ...doc.data()
                   })) */
                }).then(setFetch(false));
+               setInfiniteScroll.current?.scrollIntoView({behavior:"smooth"});
             }
          }
          else{
             console.log("done")
          }
-      // }
-      // console.log("no more messages" + moreMessages)
-      // loadMessages();
    }, [fetchIndex])
 
    return (
       <div className="text__area">
          <div ref={loadPrevious} className="load__previous">{/* {totalMessages} */}</div>
          <div className="channel__content" /* onClick={()=>loadMessages()} */>
-            {messages.map(message => ( 
-               <Message key={message.id} {...message}/>
-               // console.log("new", message)
+            {messages.map((message, index) => ( 
+               (index === loadAmount) ? (<Message ref={setInfiniteScroll} key={message.id} {...message} message="test"/>)
+               : <Message key={message.id} {...message}/>
             ))}
          </div>
          {/* <div ref={autoScroll} className="autoscroll"/> */}
