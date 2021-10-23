@@ -26,6 +26,7 @@ export async function handleRegister(email, username, password, confirmPass, han
             })
             
          }).then(()=>{
+            window.location.reload();
             console.log("Registration Success!");
          });
       } catch (error) {
