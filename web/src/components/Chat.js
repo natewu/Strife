@@ -1,17 +1,17 @@
-import React, {useEffect, useRef, useState} from 'react';
-import firebase from "firebase"
 import "styles/Chat.scss";
-import {sendMessage} from "utils/chat.js";
 
-//Redux
-import { useSelector } from "react-redux";
+import React, {useEffect, useRef, useState} from 'react';
 import { selectChannelId, selectChannelName } from "redux/reducers/appSlice.js";
 
+import {Avatar} from "@material-ui/core";
 //Material UI
 import {TextField} from "@material-ui/core";
-import {Avatar} from "@material-ui/core";
 import { db } from "api/base";
+import firebase from "firebase"
 import { selectUser } from "redux/reducers/userSlice";
+import {sendMessage} from "utils/chat.js";
+//Redux
+import { useSelector } from "react-redux";
 
 export var scrollRef = null;
 // export var setInfiniteScroll = null;
@@ -38,6 +38,7 @@ function AutoScroll({loaded, setLoaded}){
    const autoScroll = useRef();
    // setScrolled(false);
    scrollRef = autoScroll; 
+   
    useEffect(() => {
       if(loaded){
          autoScroll.current.scrollIntoView(/* {behavior:"smooth"} */);
@@ -80,7 +81,8 @@ function TextArea({id}) {
                   ...doc.data()
                }))),
                setFetchIndex(fetchIndex+1, console.log(fetchIndex)),
-               setMoreMessages(true)
+               setMoreMessages(true),
+               // setLoaded(true)
             );
          
          // setTotalMessages([]);
@@ -130,47 +132,44 @@ function TextArea({id}) {
    }, [id, moreMessages]);
    
    useEffect(() => {
-         if(fetch === true){ console.log("already fetching"); return;}
-         
-         if(moreMessages){
-            if(messages.length > 10){
-               setFetch(true);
-               var posts = db.collection("channels")
-               .doc(id)
-               .collection("messages")
-               .orderBy("timestamp", "desc")
-               
-               if(messages.length !== 0){
-                  const lastMessage = messages.reverse()[messages.length - 1];
-                  posts = posts.startAfter(lastMessage.timestamp);
-               }
+      if(fetch === true){ console.log("already fetching"); return;}
       
-               posts.limit(loadAmount)
-               .get().then((snapshot) => {
-                  if(snapshot.docs.length === 0){
-                     setMoreMessages(false);
-                     
-                  }
-                  setMessages([
-                     ...snapshot.docs.reverse().map((doc) => ({
-                        id: doc.id,
-                        ...doc.data()
-                     })),
-                     ...messages.reverse()
-                  ]);
-                  
-                  //for debug messages
-                  /* snapshot.docs.map((doc) => console.log({
+      if(moreMessages && messages.length > 10){
+         setFetch(true);
+         var posts = db.collection("channels")
+         .doc(id)
+         .collection("messages")
+         .orderBy("timestamp", "desc")
+         
+         if(messages.length > 0){
+            const lastMessage = messages.reverse()[messages.length - 1];
+            posts = posts.startAfter(lastMessage.timestamp).limit(loadAmount);
+         }
+   
+         posts.get().then((snapshot) => {
+            if(snapshot.docs.length === 0){
+               setMoreMessages(false);
+            }
+            else{
+               setMessages([
+                  ...snapshot.docs.reverse().map((doc) => ({
                      id: doc.id,
                      ...doc.data()
-                  })) */
-               }).then(setFetch(false));
-               setInfiniteScroll.current?.scrollIntoView({behavior:"smooth"});
+                  })),
+                  ...messages.reverse()
+               ]);
             }
-         }
-         else{
-            console.log("done")
-         }
+            //for debug messages
+            /* snapshot.docs.map((doc) => console.log({
+               id: doc.id,
+               ...doc.data()
+            })) */
+         }).then(setFetch(false));
+         setInfiniteScroll.current?.scrollIntoView({behavior:"smooth"});
+      }
+      else{
+         console.log("done")
+      }
    }, [fetchIndex])
 
    return (
